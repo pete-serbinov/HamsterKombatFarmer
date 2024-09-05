@@ -259,11 +259,11 @@ class HamsterClient(Session):
     def log_prefix(self):
         return f"[{self.name}]\t "
 
-    def update_tasks(self):
-        response = self.post(URL_LIST_TASKS)
-        if response.status_code == 200:
-            result = response.json()
-            self.tasks = list(filter(lambda d: d['isCompleted'] != True, result["tasks"]))            
+    # def update_tasks(self):
+    #     response = self.post(URL_LIST_TASKS)
+    #     if response.status_code == 200:
+    #         result = response.json()
+    #         self.tasks = list(filter(lambda d: d['isCompleted'] != True, result["tasks"]))            
 
     # def make_tasks(self):
     #     self.update_tasks()
