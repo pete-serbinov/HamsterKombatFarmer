@@ -265,25 +265,25 @@ class HamsterClient(Session):
             result = response.json()
             self.tasks = list(filter(lambda d: d['isCompleted'] != True, result["tasks"]))            
 
-    def make_tasks(self):
-        self.update_tasks()
-        for task in self.tasks:
-            task_id = task['id']
-            reward = task['rewardCoins']
-            is_completed = task['isCompleted']
+    # def make_tasks(self):
+    #     self.update_tasks()
+    #     for task in self.tasks:
+    #         task_id = task['id']
+    #         reward = task['rewardCoins']
+    #         is_completed = task['isCompleted']
 
-            if not task_id.startswith('hamster_youtube'):
-                continue
+    #         if not task_id.startswith('hamster_youtube'):
+    #             continue
 
-            if reward > 0:
-                sleep(choice(range(3, 6)))
-                data = {'taskId': task_id}
-                response = self.post(URL_CHECK_TASK, json=data)
-                if response.status_code == 200:
-                    result = response.json()
-                    result = result["task"]
-                    is_completed = result.get('isCompleted')
-                    if is_completed:
-                        logging.info(MSG_TASK_COMPLETED.format(reward=reward))
-                    else:
-                        logging.info(MSG_TASK_NOT_COMPLETED)
+    #         if reward > 0:
+    #             sleep(choice(range(3, 6)))
+    #             data = {'taskId': task_id}
+    #             response = self.post(URL_CHECK_TASK, json=data)
+    #             if response.status_code == 200:
+    #                 result = response.json()
+    #                 result = result["task"]
+    #                 is_completed = result.get('isCompleted')
+    #                 if is_completed:
+    #                     logging.info(MSG_TASK_COMPLETED.format(reward=reward))
+    #                 else:
+    #                     logging.info(MSG_TASK_NOT_COMPLETED)
