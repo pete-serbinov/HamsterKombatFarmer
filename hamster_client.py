@@ -116,12 +116,12 @@ class HamsterClient(Session):
         except Exception as e:
             pass
 
-    def check_task(self):
-        """ Получение ежедневной награды """
-        data = {"taskId":"streak_days"}
-        if not self.task_checked_at or time() - self.task_checked_at >= 60 * 60:
-            self.post(URL_CHECK_TASK, json=data)
-            self.task_checked_at = time()
+    # def check_task(self):
+    #     """ Получение ежедневной награды """
+    #     data = {"taskId":"streak_days"}
+    #     if not self.task_checked_at or time() - self.task_checked_at >= 60 * 60:
+    #         self.post(URL_CHECK_TASK, json=data)
+    #         self.task_checked_at = time()
 
     def tap(self):
         taps_count = self.available_taps or self.recover_per_sec

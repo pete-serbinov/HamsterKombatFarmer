@@ -13,7 +13,7 @@ def main():
             client.claim_daily_cipher()
             client.tap()
             client.buy_upgrades()
-            client.check_task()
+            # client.check_task()
             client.make_tasks()
             client.claim_combo_reward()
             if client.is_taps_boost_available:
