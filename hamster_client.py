@@ -116,12 +116,12 @@ class HamsterClient(Session):
         except Exception as e:
             pass
 
-    # def check_task(self):
-    #     """ Получение ежедневной награды """
-    #     data = {"taskId":"streak_days"}
-    #     if not self.task_checked_at or time() - self.task_checked_at >= 60 * 60:
-    #         self.post(URL_CHECK_TASK, json=data)
-    #         self.task_checked_at = time()
+    def check_task(self):
+        """ Получение ежедневной награды """
+        data = {"taskId":"streak_days_special"}
+        if not self.task_checked_at or time() - self.task_checked_at >= 60 * 60:
+            self.post(URL_CHECK_TASK, json=data)
+            self.task_checked_at = time()
 
     def tap(self):
         taps_count = self.available_taps or self.recover_per_sec
@@ -259,31 +259,31 @@ class HamsterClient(Session):
     def log_prefix(self):
         return f"[{self.name}]\t "
 
-    # def update_tasks(self):
-    #     response = self.post(URL_LIST_TASKS)
-    #     if response.status_code == 200:
-    #         result = response.json()
-    #         self.tasks = list(filter(lambda d: d['isCompleted'] != True, result["tasks"]))            
+    def update_tasks(self):
+        response = self.post(URL_LIST_TASKS)
+        if response.status_code == 200:
+            result = response.json()
+            self.tasks = list(filter(lambda d: d['isCompleted'] != True, result["tasks"]))            
 
-    # def make_tasks(self):
-    #     self.update_tasks()
-    #     for task in self.tasks:
-    #         task_id = task['id']
-    #         reward = task['rewardCoins']
-    #         is_completed = task['isCompleted']
+    def make_tasks(self):
+        self.update_tasks()
+        for task in self.tasks:
+            task_id = task['id']
+            reward = task.get('rewardCoins', 0)
+            is_completed = task['isCompleted']
 
-    #         if not task_id.startswith('hamster_youtube'):
-    #             continue
+            if not task_id.startswith('hamster_youtube'):
+                continue
 
-    #         if reward > 0:
-    #             sleep(choice(range(3, 6)))
-    #             data = {'taskId': task_id}
-    #             response = self.post(URL_CHECK_TASK, json=data)
-    #             if response.status_code == 200:
-    #                 result = response.json()
-    #                 result = result["task"]
-    #                 is_completed = result.get('isCompleted')
-    #                 if is_completed:
-    #                     logging.info(MSG_TASK_COMPLETED.format(reward=reward))
-    #                 else:
-    #                     logging.info(MSG_TASK_NOT_COMPLETED)
+            if not is_completed:
+                sleep(choice(range(3, 6)))
+                data = {'taskId': task_id}
+                response = self.post(URL_CHECK_TASK, json=data)
+                if response.status_code == 200:
+                    result = response.json()
+                    result = result["task"]
+                    is_completed = result.get('isCompleted')
+                    if is_completed:
+                        logging.info(MSG_TASK_COMPLETED.format(reward=reward))
+                    else:
+                        logging.info(MSG_TASK_NOT_COMPLETED)
